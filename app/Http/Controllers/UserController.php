@@ -6,14 +6,22 @@ use App\User;
 use App\User_Activity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+// use App\Http\Controllers\DB;
 
 class UserController extends Controller
 {
     //
     
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::paginate(10);
+        $users = User::sortable()->paginate(10);
+        // $users = User::paginate(10);
+        // if ($request->has('sort')) {
+
+        //     $users=User::orderBy($request->get('sort'), $request->get('direction'))->paginate(10);
+           
+            
+        //     }
         return view('home',compact('users'));
     }
 
@@ -118,5 +126,28 @@ class UserController extends Controller
     public function destroy(User $user){
         $user->delete();
         return redirect('/users');
+    }
+
+    // public function sort(Request $request,$direction)
+    // {
+    //     $sort = $request->get('sort');
+
+    //     $users = DB::table('users')->where('username','like','%'.$sort.'%')
+    //     ->orWhere('first_name','like','%'.$sort.'%')
+    //     ->orWhere('last_name','like','%'.$sort.'%')
+    //     ->orWhere('email','like','%'.$sort.'%')->paginate(10);
+        
+    //     return view('/home',[ 'users' =>$users]);
+    // }
+
+    public function search(Request $request)
+    {   
+       $search = $request->get('search');
+    //    dd($search);
+       $users = \DB::table('users')->where('username','like','%'.$search.'%')
+                                        ->orWhere('first_name','like','%'.$search.'%')
+                                        ->orWhere('last_name','like','%'.$search.'%')
+                                        ->orWhere('email','like','%'.$search.'%')->paginate(10);
+       return view('/home',[ 'users' =>$users]);
     }
 }

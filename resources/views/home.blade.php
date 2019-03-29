@@ -13,20 +13,20 @@
                     {{ session('status') }}
                 </div>
             @endif --}}
-        <form class="form-inline my-4 ">
-            <input class="form-control float-right" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success ml-2" type="submit">Search</button>
+        <form class="form-inline my-4 " action="/search" method="GET" >
+            <input class="form-control float-right" type="search" placeholder="Search" name="search" aria-label="Search">
+            <button class="btn btn-outline-success ml-2" type="submit" >Search</button>
         </form>
-        <p>LastLoginInAt {{auth()->user()->last_login_in_at}} </p>
+        {{-- <p>LastLoginInAt {{auth()->user()->last_login_in_at}} </p> --}}
             <table class="table table-striped my-2">
                 <thead>
                     <tr>
-                    <th scope="col">UserName</th>
-                    <th scope="col">FirstName</th>
-                    <th scope="col">LastName</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Created At</th>
-                    <th scope="col">Last Login At</th>
+                    <th scope="col">@sortablelink('username')</th>
+                    <th scope="col">@sortablelink('first_name')</th>
+                    <th scope="col">@sortablelink('last_name')</th>
+                    <th scope="col">@sortablelink('email')</th>
+                    <th scope="col">@sortablelink('created_at')</th>
+                    <th scope="col">@sortablelink('last_login_at')</th>
                     <th colspan="2">Actions</th>
                     </tr>
                 </thead>
@@ -38,7 +38,7 @@
                     <td>{{$user->last_name}}</td>
                     <td>{{$user->email}}</td>
                     <td>{{$user->created_at}}</td>
-                    <td>a</td>
+                    <td>{{$user->last_login_in_at}}</td>
                     
                     <td>
                         <a  href="/users/{{$user->id}}/edit"><button type="button" class="btn btn-primary">Edit</button></a>
@@ -53,10 +53,11 @@
                    
                 </tbody>
             </table>
+             {!! $users->appends(\Request::except('page'))->render() !!}
         {{-- </div> --}}
     </div>
 </div>
-<div class="container">
+{{-- <div class="container">
 {{$users->links()}}
-</div>
+</div> --}}
 @endsection

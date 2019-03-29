@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateLogsAuthenticationTable extends Migration
+class CreatePasswordSecuritiesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class CreateLogsAuthenticationTable extends Migration
      */
     public function up()
     {
-        Schema::create('logs_authentication', function (Blueprint $table) {
+        Schema::create('password_securities', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('user_id');
-            $table->time('login_time');
-            $table->time('logout_time');
-            $table->string('ip_address');
-            $table->string('browser_agent');
+            $table->boolean('google2fa_enable')->default(false);
+            $table->string('google2fa_secret')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ class CreateLogsAuthenticationTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('logs_authentication');
+        Schema::dropIfExists('password_securities');
     }
 }

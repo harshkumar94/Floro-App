@@ -5,10 +5,12 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Kyslik\ColumnSortable\Sortable;
 
 class User extends Authenticatable
 {
     use Notifiable;
+    use Sortable;
 
     /**
      * The attributes that are mass assignable.
@@ -16,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'username', 'email', 'password','first_name','last_name','address','house_number','postal_code','city','telephone_number',
+        'username', 'email', 'password','first_name','last_name','address','house_number','postal_code','city','telephone_number','last_login_in_at','last_login_ip','http_user_agent',
     ];
 
     /**
@@ -36,4 +38,11 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    protected $sortable = ['username','first_name','last_name','email','created_at'];
+
+    public function passwordSecurity()
+    {
+        return $this->hasOne('App\PasswordSecurity');
+    }
 }

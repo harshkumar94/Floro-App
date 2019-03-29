@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddSignInAtToUsers extends Migration
+class AddLoginFieldsToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,8 +15,13 @@ class AddSignInAtToUsers extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             //
-            $table->timestamp('last_login_in_at')->nullable();
-           
+            
+            
+            $table->timestamp('logout_time')->nullable();
+            $table->string('last_login_ip')->nullable();
+            $table->string('http_user_agent')->nullable();
+            
+
         });
     }
 
@@ -29,7 +34,9 @@ class AddSignInAtToUsers extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             //
-            $table->dropColumn('last_login_in_at');
+            $table->dropColumn('logout_time');
+            $table->dropColumn('last_login_ip');
+            $table->dropColumn('http_user_agent');
         });
     }
 }
